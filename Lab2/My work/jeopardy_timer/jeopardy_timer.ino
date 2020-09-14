@@ -1,6 +1,4 @@
-#include "../toneMelody/pitches.h"
-#include "TimerOne.h"
-
+#include "pitches.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -16,9 +14,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define LOGO_HEIGHT   16
 #define LOGO_WIDTH    16
 
-int sensorPin = A0;    // select the input pin for the potentiometer
-int ledPin = 13;      // select the pin for the LED
-int sensorValue = 0;  // variable to store the value coming from the sensor
+int sensor_pin = A0;    // select the input pin for the potentiometer
+int sensor_value = 0;  // variable to store the value coming from the sensor
 
 int melody[] = {
   NOTE_A4,NOTE_D5,NOTE_A4,NOTE_D4,
@@ -43,7 +40,36 @@ int noteDurations[] = {
   4,4,4,4
 };
 
+//play theme until sensor_value seconds
+void playTheme(int sensor_value) {
+    unsigned long start = millis() / 1000;
 
+    while (true) {
+        // iterate over the notes of the melody:
+        for (int thisNote = 0; thisNote < 35; thisNote++) {
+
+            // to calculate the note duration, take one second divided by the note type.
+            //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+            int noteDuration = 1000 / noteDurations[thisNote];
+            tone(8, melody[thisNote], noteDuration);
+
+            // to distinguish the notes, set a minimum time between them.
+            // the note's duration + 30% seems to work well:
+            int pauseBetweenNotes = noteDuration * 1.30;
+            delay(pauseBetweenNotes);
+            // stop the tone playing:
+            noTone(8);
+
+            printToOLED((unsigned long)sensor_value - ((millis() / 1000) - start));
+
+            if (((millis() / 1000) - start) == (unsigned long)sensor_value) {
+                return;
+            }
+        }
+    }
+}
+
+//write done to screen
 void writeDone() {
     display.clearDisplay();
 
@@ -53,9 +79,21 @@ void writeDone() {
     display.println("TIME'S UP!");
 
     display.display();
-    delay(40);
 }
 
+//print an int to screen
+void printToOLED(int sensor_value) {
+    display.clearDisplay();
+
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(0,0);             // Start at top-left corner
+    display.println(sensor_value);
+
+    display.display();
+}
+
+//infinite loop stop
 void stop() {
     writeDone();
     for (;;); //infinite loop
@@ -77,20 +115,15 @@ void setup() {
 
     // Clear the buffer
     display.clearDisplay();
+    
+    // draw to display
+    sensor_value = analogRead(sensor_pin) / 10; //divide by 10 for better range of times
+    printToOLED(sensor_value);
 
-    // declare the ledPin as an OUTPUT:
-    pinMode(ledPin, OUTPUT);
-
-    //start reading from input and start timer
-    //!!!!
-
-    Timer1.initialize(10000000); //10 seconds
-    Timer1.attachInterrupt(stop);
+    delay(2000); //pause to show timer
 }
 
 void loop() {
-    
-
+    playTheme(sensor_value);
+    stop();
 }
-
-
