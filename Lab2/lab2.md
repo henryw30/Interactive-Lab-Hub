@@ -35,4 +35,4 @@
 
 3. Post a link to the completed lab report your GitHub repo
     
-    * [Repo](https://github.com/henryw30/Interactive-Lab-Hub/blob/master/Lab2/lab2.md)
+    * [Report](https://github.com/henryw30/Interactive-Lab-Hub/blob/master/Lab2/lab2.md)
