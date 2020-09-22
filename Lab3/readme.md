@@ -91,6 +91,10 @@ Servo motors generally have 3 wires; power, ground and signal. [Here](https://ww
 
 **a. Which color wires correspond to power, ground and signal?**
 
+* red = Vcc
+* brown = Gnd
+* orange = PWM (signal)
+
 Connect the servo to your breadboard, supplying power and ground to the appropriate pins. 
 
 ### Part 2. Connect the Servo to your Arduino
@@ -102,9 +106,14 @@ Now open the [Sweep](https://www.arduino.cc/en/Tutorial/Sweep) sketch in the Ard
 **a. Which Arduino pin should the signal line of the servo be attached to?**
 Upload the sketch to the Arduino. Your servo should start sweeping back and forth, by about 180 degrees.
 
+* signal -> connected to pin 9 (the pwm line)
+
 Change some parameters in the sketch to make the servo sweep slower, or over a smaller angle.
 
 **b. What aspects of the Servo code control angle or speed?**
+
+* speed = delay parameter
+* angle = upper bound in pos in for loop 
 
 ## Part C. Integrating input and output
 
