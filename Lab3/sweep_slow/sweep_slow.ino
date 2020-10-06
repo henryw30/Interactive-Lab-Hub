@@ -20,7 +20,7 @@ int sensor_value = 0;  // variable to store the value coming from the sensor
 void setup() {
   myservo.attach(9);  // attaches the servo on pin 9 to the servo object
 
-  //sensor_value = analogRead(sensor_pin) / 10; //divide by 10 for better range of times
+  sensor_value = analogRead(sensor_pin) / 10; //divide by 10 for better range of times
 }
 
 void loop() {
