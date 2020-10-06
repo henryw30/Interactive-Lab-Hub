@@ -8,6 +8,9 @@ void state1Setup() {
   for (int i = 0; i < EEPROMSIZE; i++) {
     value = EEPROM.read(i);
     Serial.print(value);
+    if (i % 2 == 1) {
+      Serial.print(" "); //group by int since every 2 bytes is a new int
+    }
   }
   Serial.println();
 

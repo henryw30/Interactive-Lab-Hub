@@ -26,13 +26,14 @@ const int sensorMax = 1024;
 const int EEPROMSIZE=1024;
 
 int sensorPin = 0;    // select the input pin for the potentiometer
+int photoCell = 1;
 int ledPin = LED_BUILTIN;    
 int state,lastState = -1;
 
 void setup() {
   // initialize serial communication:
   Serial.begin(9600);  
-  pinMode(ledPin, OUTPUT);  
+  pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
