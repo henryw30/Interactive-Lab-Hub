@@ -3,15 +3,29 @@
 byte value;
 
 void state1Setup() {
-  Serial.println("Reading from EEPROM");
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0,0);             // Start at top-left corner
+
+  
+  display.println("Reading from EEPROM");
 
   for (int i = 0; i < EEPROMSIZE; i++) {
     value = EEPROM.read(i);
-    Serial.print(value);
+    display.print(value); display.print(" ");
+    display.display();
+    if (i % 60 == 0) {
+      display.clearDisplay();
+      display.setCursor(0,0);
+    }
+    
+    //Serial.print(value); Serial.print(" ");
   }
-  Serial.println();
+  display.println();
 
-  Serial.println("Done reading from EEPROM");
+  display.println("Done reading from EEPROM");
+  display.display();
 }
 
 void state1Loop() {

@@ -1,19 +1,27 @@
 // This borrows code from Examples->EEPROM->eeprom_write
 
-String textarray = "hello cornell tech!";
-int endAddr;
+int addr = 0;
+int readCell = 0; //ints are 10 bits
+
+//photo cell info saved within 2 bytes
 
 void state2Setup() {
   digitalWrite(ledPin, LOW);
-  Serial.println("Writing to EEPROM");
-  
-  //if any of the pin settings for the different states differed for the different states, you could change those settings here.
-  endAddr = min(textarray.length(), EEPROMSIZE);
-  for (int i = 0; i < endAddr; i++) {
-    EEPROM.write(i, textarray[i]);
-  }
 
-  Serial.println("String committed to EEPROM!");
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0,0);             // Start at top-left corner
+
+  display.println("Writing data from photo cell to EEPROM");
+  readCell = analogRead(photoCell) / 4;
+  display.println(readCell);
+
+  EEPROM.write(addr, readCell);
+  addr = (addr + 1) % 1024;
+
+  display.println("Photo cell info committed to EEPROM!");
+  display.display();
 }
 
 void state2Loop() {
@@ -21,6 +29,9 @@ void state2Loop() {
 }
 
 void doState2() {
-  if (lastState != 2) state2Setup();
+  if (lastState != 2) {
+      addr = 0;
+  }
+  state2Setup();
   state2Loop();
 }
