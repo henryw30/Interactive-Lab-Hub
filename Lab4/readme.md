@@ -11,6 +11,10 @@
 
 * 10 bits (from data sheet), using 10 based on potentiometer readings (2^10 = 1024)
  
+<<<<<<< HEAD
+=======
+For this lab, you can use the serial monitor, plotter and/or the OLED display whenever you are told to display something, depending on what you think is easier/prettier.
+>>>>>>> 92812ac4bf1a3341fe019dd5d7a6f682695fb1ff
 
 ## Part B. RGB LED
 
