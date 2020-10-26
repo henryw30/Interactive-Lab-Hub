@@ -15,52 +15,13 @@ $ sudo apt uninstall [package that you did not prefer]
 
 * i like epiphany better, midori feels slower
 
-## Serving webpages with the Raspberry Pi
-
-To use the Raspberry Pi as a webserver, we’re going to install a python-based webserver named Flask.:
-```shell
-pi@ixe00:~/helloWorld $ cat basicserver.py
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return 'Hello world'
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-
-
-pi@ixe00:~/helloWorld $ python basicserver.py
- * Serving Flask app "basicserver" (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: on
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 162-573-883
-```
 From a remote browser, check to make sure your webserver is working.
 
 ** customize the code enough that the webpage served up is clearly your own, and include a screenshot and any modified code in the lab folder. **
 
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2020Fall/images/Screen%20Shot%202020-10-20%20at%207.39.12%20PM.png" width="800px">
+* in basicserver.py and webpage.png
 
-## Set up and Run Interaction Engine
-
-For this exercise, we will set up and run HelloYou the basic Interaction Engine. This is like HelloWorld, but is called HelloYou because it is designed to be interactive and to connect actions and responses across distance.
-
-![](https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2020Fall/images/IxE_Explanation_python.gif?raw=true)
-
-HelloYou has 3 parts:
-1. The Arduino sketch, `helloYou.ino` that is installed and runs on the Arduino.
-1. The Python code, `server.py`, that is installed and runs on the Raspberry Pi.
-1. The html file and associated javascript code, `index.html` and `client.js`, which is served by the Raspberry Pi server to the client browser, and runs on the client’s computer.
-
-### Flash the HelloYou Sketch onto the Arduino
+# Flash the HelloYou Sketch onto the Arduino
 
 Make sure your arduino is connected to your Raspberry Pi with a USB cable. Using the Arduino IDE on the Raspberry Pi, open `helloYou/helloYou.ino`.
 
@@ -86,7 +47,7 @@ Look at the code. How does the Arduino communicate with the Pi when the code is 
 
 Compile and flash the `helloYou.ino` code onto the Arduino.
 
-### Run the HelloYou server on the RPi
+# Run the HelloYou server on the RPi
 
 Using your favorite text editor, open `helloYou/server.py`.
 
@@ -118,23 +79,6 @@ What messages are sent to the console? When?
 
 * 'ledON' and 'ledOFF' when the respective button is pressed on the website
 
-
-```
-pi@ixe00:~/helloYou $ python server.py
- * Serving Flask app "server" (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
-```
-Now pull up a web browser on your computer, and look at the webpage being served on the Raspberry Pi on port 5000:
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2020Fall/images/Screen%20Shot%202020-10-20%20at%208.05.39%20PM.png" width="800px">
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2020Fall/images/Screen%20Shot%202020-10-20%20at%208.33.33%20PM.png" width="800px">
-
-The browser shows the webpage that we loaded, and is also running the associated `client.js` file.
 
 ## Internet of Cornell Tech Things 
 
