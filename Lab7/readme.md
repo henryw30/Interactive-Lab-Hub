@@ -1,72 +1,3 @@
-# Prelab
-
-For this week's [Lab 7](https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/wiki/Lab-07) we'll be making our own Video Doorbells, like a DIY [Ring](https://ring.com).
-
-Bring your whole kit, Pi and Arduino, to lab this Thursday.
- 
-In preparation for this week's lab, you'll build a small circuit with your Arduino and test it with some code. You don't need the Pi for this preLab.
-
-### Button Circuit
-
-On your breadboard, make this basic button circuit connected to `pin 2` of the Arduino. (The LED is built in on the board and connected to `pin 13`.)
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/wiki/images/button_circuit.png" width="200px">
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/wiki/images/metroCircuit.png" width="400px"> 
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/wiki/images/realCircuit.jpg" width="400px">
-
-Remember that the orientation of the button matters. Of the four pins, the pairs of pins closest to each other are the two that get connected when you push the button. And in fact, each pin of the close pair is **always connected** to the corresponding pin of the other close pair. This diagram my help:
-
-<img src="https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2020Fall/images/button-deal.png" width="400px" />
-
-### Upload the `HelloYou` code
-
-`HelloYou` is Arduino code that communicates over Serial to a Raspberry Pi (or any computer with a serial interface), sending any button events **out** to the computer, and turning on or off the built-in LED in response to message events coming **in**.
-
-Copy this [HelloYou.ino](https://github.com/FAR-Lab/interaction-engine/blob/master/helloYouSketch.ino) sketch into a new Arduino window and upload it to your board. (The built-in LED marked `L` should be off.)
-
-Open the Serial Monitor in Arduino and observe what happens when you press the button in your circuit -- you should see a change!
-
-## Internet browsing on the Raspberry Pi
-
-To fetch information that is on the internet, we have used curl or  wget:
-```
-pi@ixe00:~/helloYou $ curl http://google.com
-<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
-<TITLE>301 Moved</TITLE></HEAD><BODY>
-<H1>301 Moved</H1>
-The document has moved
-<A HREF="http://www.google.com/">here</A>.
-</BODY></HTML>
-
-pi@ixe00:~ $ wget http://www.google.com
---2020-09-03 19:02:22--  http://www.google.com/
-Resolving www.google.com (www.google.com)... 172.217.164.100, 2607:f8b0:4005:805::2004
-Connecting to www.google.com (www.google.com)|172.217.164.100|:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: unspecified [text/html]
-Saving to: ‘index.html’
-
-index.html              [ <=>                ]  11.84K  --.-KB/s    in 0.001s  
-
-2020-09-03 19:02:22 (18.2 MB/s) - ‘index.html’ saved [12127]
-```
-These programs are similar, but the above example shows how they differ. Curl does a ‘one-shot’ download of the file, whereas wget gets the forward and then goes to the forwarded address to download the index.html file.
-
-We can use this to get data from the internet! Try:
-```
-$ curl extreme-ip-lookup.com/csv/
-```
-This looks up the information about Pi’s location through the IP address of the local router.
-
-Weather:
-```
-$ curl wttr.in
-$ curl wttr.in/moon
-```
-This can be used to download files that are hosted on the internet. Download a musical clip that you like that is in a format that can be played on the Raspberry Pi.
-
 How can we *view* the web from a command line interface? Two ways! First, we can just use a text based browser, like lynx.
 ```
 $ sudo apt install lynx
@@ -81,6 +12,8 @@ Which one did you like more? Uninstall the other one!
 $ sudo apt uninstall [package that you did not prefer]
 
 ```
+
+* i like epiphany better, midori feels slower
 
 ## Serving webpages with the Raspberry Pi
 
@@ -132,10 +65,24 @@ HelloYou has 3 parts:
 Make sure your arduino is connected to your Raspberry Pi with a USB cable. Using the Arduino IDE on the Raspberry Pi, open `helloYou/helloYou.ino`.
 
 Look at the code. How does the Arduino communicate with the Pi when the code is running?
+
+* arduino checks when button is pressed and sends information through serial port
+
 ** What messages are sent from the Arduino to the Pi? **
+
+* "light" and "dark" messages
+
 ** What messages are expected from the Pi to the Arduino? **
+
+* "H" to turn led on
+
 ** What happens if the Pi sends an unexpected message to the Arduino? **
+
+* led turns off
+
 ** How fast does the Arduino communicate with the Pi? What would you change to make it send messages less often? **
+
+* 9600 baud rate which is bits per second. Lower the rate to send messages less often
 
 Compile and flash the `helloYou.ino` code onto the Arduino.
 
@@ -144,11 +91,33 @@ Compile and flash the `helloYou.ino` code onto the Arduino.
 Using your favorite text editor, open `helloYou/server.py`.
 
 Look at the code. What interface does the Pi use to communicate with the Arduino when the code is running?
+
+* serial port
+
 What messages are sent from the Pi to the Arduino? 
+
+* "H" and "L" depending if the ledON or ledOFF button was pressed on the website
+
+
 What messages are expected from the Arduino to the Pi?
+
+* "light" and "dark", which change the website background to light and dark respectively
+
+
 What happens if the Arduino sends an unexpected message to the Pi?
+
+* nothing
+
+
 What part of the code controls what is served when a browser requests a page from the server?
+
+* the flask code in helloYou.py (e.g. the app.route function sends the index.html page)
+
+
 What messages are sent to the console? When?
+
+* 'ledON' and 'ledOFF' when the respective button is pressed on the website
+
 
 ```
 pi@ixe00:~/helloYou $ python server.py
